@@ -15,31 +15,14 @@ This project is a voice-driven appointment system developed with Java and Spring
 - Docker & Docker Compose
 - Ngrok (for local webhook testing)
 
-## Project Structure
 
-```
-├── controller
-│   ├── AppointmentController.java
-│   └── DialogflowWebhookController.java
-├── service
-│   ├── AppointmentService.java
-│   ├── impl
-│   │   └── AppointmentServiceImpl.java
-│   └── DialogflowService.java
-├── model
-├── dto
-├── repository
-├── config
-├── resources
-│   └── application.properties
-```
 
 ## How to Run
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/ivr-ai-platform.git
-   cd ivr-ai-platform
+   git clone https://github.com/enverkorkmaz/ivr-dialogflow-backend.git
+   cd ivr-ai
    ```
 
 2. Build the project:
