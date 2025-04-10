@@ -1,0 +1,65 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: ivr-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ivrdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ivr-network
+
+  backend:
+    container_name: ivr-ai-backend
+    image: ivr-ai-backend:latest
+    build:
+      context: .
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_URL=jdbc:postgresql://ivr-postgres:5432/ivrdb
+      - DB_USER=postgres
+      - DB_PASS=12345
+    networks:
+      - ivr-network
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - backend
+    networks:
+      - ivr-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - ivr-network
+
+
+
+
+networks:
+  ivr-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
